@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  deploy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: run-s fetch build:translator deploy:translator:ci build:docs deploy:docs:ci
+    volumes:
+      - ./credentials:/app/credentials
+      - ./config:/app/config
+    env_file:
+      - deploy.env

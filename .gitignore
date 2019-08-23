@@ -1,0 +1,10 @@
+/config/translator.config.ts
+/config/translator.firebaserc
+/config/docs.config.ts
+/config/docs.firebaserc
+/config/init.json
+/.firebase
+/build/*
+/cache/*
+/deploy.env
+!.keep

@@ -1,0 +1,4 @@
+/config/*
+/build/*
+/cache/*
+/deploy.env

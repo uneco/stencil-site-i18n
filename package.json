@@ -1,0 +1,44 @@
+{
+  "name": "stencil-site-translator",
+  "version": "1.0.0",
+  "author": "Uneco <aoki@u-ne.co>",
+  "license": "MIT",
+  "scripts": {
+    "test": "exit 0",
+    "fetch": "./scripts/fetch-latest-origin.sh",
+    "build:translator": "./scripts/build-translator.sh",
+    "deploy:translator": "./scripts/deploy-translator.sh",
+    "deploy:translator:ci": "./scripts/deploy-translator-ci.sh",
+    "build:docs": "./scripts/build-docs.sh",
+    "deploy:docs": "./scripts/deploy-docs.sh",
+    "deploy:docs:ci": "./scripts/deploy-docs-ci.sh",
+    "deploy:ci": "./scripts/deploy-ci.sh"
+  },
+  "dependencies": {
+    "@types/cheerio": "^0.22.13",
+    "@types/js-yaml": "^3.12.1",
+    "@types/marked": "^0.6.5",
+    "@types/node": "^12.7.1",
+    "@types/node-fetch": "^2.5.0",
+    "@types/turndown": "^5.0.0",
+    "cheerio": "^1.0.0-rc.3",
+    "js-yaml": "^3.13.1",
+    "marked": "^0.7.0",
+    "node-fetch": "^2.6.0",
+    "ts-node": "^8.3.0",
+    "turndown": "^5.0.3",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "1.13.0",
+    "@typescript-eslint/eslint-plugin-tslint": "1.13.0",
+    "@typescript-eslint/parser": "1.13.0",
+    "@typescript-eslint/typescript-estree": "1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-unicorn": "^10.0.0",
+    "eslint-plugin-wix-editor": "^3.0.0",
+    "npm-run-all": "^4.1.5",
+    "tslint": "^5.18.0"
+  }
+}

@@ -1,0 +1,80 @@
+sections:
+  Introduction:
+    text: 導入
+    children:
+      Why Stencil: なぜ Stencil を選ぶのか
+      Goals and Objectives: 目標と目的
+      Browser Support: ブラウザ対応
+      Getting Started: 入門ガイド
+      My First Component: はじめてのコンポーネント
+      FAQ: よくある質問
+  Design Systems:
+    text: デザインシステム
+    children:
+      What is a Design System?: デザインシステムとは？
+      Stencil for Design Systems: Stencil によるデザインシステム
+  Components:
+    text: コンポーネント
+    children:
+      API: API
+      Component: コンポーネント
+      Lifecycle Methods: ライフサイクルメソッド
+      Properties: プロパティ
+      Internal State: 内部ステート
+      Reactive Data: リアクティブデータ
+      Using JSX: JSX の利用
+      Events: イベント
+      Methods: メソッド
+      Host Element: Host 要素
+      Styling: スタイリング
+      Functional Components: 関数コンポーネント
+  Framework Integrations:
+    text: フレームワーク統合
+    children:
+      Overview: 概要
+      Angular: Angular
+      React: React
+      Vue: Vue
+      Ember: Ember
+      JavaScript: JavaScript
+  Config:
+    text: 設定
+    children:
+      Overview: 概要
+      Dev Server: 開発用サーバ
+      Plugins: プラグイン
+  Output Targets:
+    text: 出力設定
+    children:
+      Overview: 概要
+      www: www
+      dist: dist
+      docs-readme: docs-readme
+      docs-json: docs-json
+      Copy Tasks: コピータスク
+  Guides:
+    text: ガイド
+    children:
+      Prerendering: 事前レンダリング
+      Bundling: バンドル化
+      Typed Components: 型付きコンポーネント
+      Forms: フォーム
+      Style Guide: スタイルガイド
+      Service Workers: Service Worker
+      State Tunnel: State Tunnel
+      Redux: Redux
+  Testing:
+    text: テスト
+    children:
+      Overview: 概要
+      Config: 設定
+      Unit Testing: ユニットテスト
+      End-to-end Testing: E2E テスト
+      Mocking: モック
+      Visual Screenshot Diff: Visual Screenshot Diff
+  Community:
+    text: コミュニティ
+    children:
+      Stencil on GitHub: Stencil on GitHub
+      Stencil on Slack: Stencil on Slack
+      Stencil on Twitter: Stencil on Twitter
