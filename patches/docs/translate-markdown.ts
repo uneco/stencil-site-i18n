@@ -1,6 +1,6 @@
 /* eslint-disable require-atomic-updates */
 
-import Turndown from 'turndown'
+import Turndown, { TagName } from 'turndown'
 import marked from 'marked'
 import { createHash } from 'crypto'
 import fetch from 'node-fetch'
@@ -19,6 +19,17 @@ interface ITranslatedPhrase {
       displayName: string,
     },
   }>,
+}
+
+function revertToMarkdown (html: string, keep: TagName[] = []) {
+  const turndown = new Turndown({
+    headingStyle: 'atx',
+    bulletListMarker: '-',
+    codeBlockStyle: 'fenced',
+    fence: '```',
+  })
+  turndown.keep(keep)
+  return turndown.turndown(html)
 }
 
 function hash (text: string) {
@@ -48,7 +59,7 @@ function extractTagNames (html: string) {
   }
   const blacklist = ['#document', '!doctype', '#text', 'html', 'head', 'body']
   return capture(createDocument(html))
-    .map((name) => name.toLowerCase())
+    .map((name) => name.toLowerCase() as TagName)
     .filter((name) => !blacklist.includes(name))
 }
 
@@ -102,8 +113,7 @@ export async function translateMarkdown (parsedMarkdown: any) {
   }
 
   const html = marked(parsedMarkdown.body, { renderer })
-  turndown.keep(extractTagNames(html) as any)
-  parsedMarkdown.body = turndown.turndown(html)
+  parsedMarkdown.body = revertToMarkdown(html, extractTagNames(html))
 
   const translatorIds = [...translators.values()]
   parsedMarkdown.attributes.title = translate(parsedMarkdown.attributes.title)
