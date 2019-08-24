@@ -16,6 +16,7 @@
     "no-bitwise": false,
     "no-namespace": [true, "allow-declarations"],
     "no-console": [false],
+    "no-submodule-imports": false,
     "no-consecutive-blank-lines": [true, 2],
     "no-var-requires": false,
     "max-classes-per-file": false,
@@ -25,6 +26,5 @@
   "jsRules": {
     "curly": true
   },
-  "rulesDirectory": [
-  ]
+  "rulesDirectory": []
 }
