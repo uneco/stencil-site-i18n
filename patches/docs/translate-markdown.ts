@@ -21,6 +21,9 @@ interface ITranslatedPhrase {
   }>,
 }
 
+const bareParagraphRenderer = new marked.Renderer()
+bareParagraphRenderer.paragraph = (text) => text
+
 function revertToMarkdown (html: string, keep: TagName[] = []) {
   const turndown = new Turndown({
     headingStyle: 'atx',
@@ -70,15 +73,8 @@ export async function translateMarkdown (parsedMarkdown: any) {
   let totalCharacterCount = 0
   let totalTranslatedCharacterCount = 0
 
-  const turndown = new Turndown({
-    headingStyle: 'atx',
-    bulletListMarker: '-',
-    codeBlockStyle: 'fenced',
-    fence: '```',
-  })
-
   function translate (text: string) {
-    const markdown = turndown.turndown(text).replace(/"/g, '&quot;')
+    const markdown = revertToMarkdown(text).replace(/"/g, '&quot;')
     totalCharacterCount += markdown.length
     const key = hash(markdown)
     const translated = translatedData.find((phrase) => phrase.id === key)
@@ -88,7 +84,9 @@ export async function translateMarkdown (parsedMarkdown: any) {
       for (const translator of translated.translators) {
         translators.add(translator.user.githubId)
       }
-      return translated.translatedText
+      return marked(translated.translatedText, {
+        renderer: bareParagraphRenderer,
+      })
     } else {
       return text
     }
