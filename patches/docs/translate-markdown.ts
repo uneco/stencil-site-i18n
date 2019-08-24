@@ -5,6 +5,7 @@ import marked from 'marked'
 import { createHash } from 'crypto'
 import fetch from 'node-fetch'
 import url from 'url'
+import { createDocument } from '@stencil/core/mock-doc'
 
 interface ITranslatedPhrase {
   id: string,
@@ -19,13 +20,6 @@ interface ITranslatedPhrase {
     },
   }>,
 }
-
-const turndown = new Turndown({
-  headingStyle: 'atx',
-  bulletListMarker: '-',
-  codeBlockStyle: 'fenced',
-  fence: '```',
-})
 
 function hash (text: string) {
   return createHash('sha1').update(text.trim()).digest().toString('hex')
@@ -48,12 +42,29 @@ function fetchGithubUsernames (ids: string[]) {
   return Promise.all(fetchTasks)
 }
 
+function extractTagNames (html: string) {
+  const capture = (node: any): string[] => {
+    return [...new Set([node.nodeName, ...node.childNodes.flatMap(capture)])]
+  }
+  const blacklist = ['#document', '!doctype', '#text', 'html', 'head', 'body']
+  return capture(createDocument(html))
+    .map((name) => name.toLowerCase())
+    .filter((name) => !blacklist.includes(name))
+}
+
 export async function translateMarkdown (parsedMarkdown: any) {
   const translatedData: ITranslatedPhrase[] = require('./translated.json')
   const renderer = new marked.Renderer()
   const translators = new Set<string>()
   let totalCharacterCount = 0
   let totalTranslatedCharacterCount = 0
+
+  const turndown = new Turndown({
+    headingStyle: 'atx',
+    bulletListMarker: '-',
+    codeBlockStyle: 'fenced',
+    fence: '```',
+  })
 
   function translate (text: string) {
     const markdown = turndown.turndown(text).replace(/"/g, '&quot;')
@@ -91,6 +102,7 @@ export async function translateMarkdown (parsedMarkdown: any) {
   }
 
   const html = marked(parsedMarkdown.body, { renderer })
+  turndown.keep(extractTagNames(html) as any)
   parsedMarkdown.body = turndown.turndown(html)
 
   const translatorIds = [...translators.values()]
