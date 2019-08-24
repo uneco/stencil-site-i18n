@@ -1,6 +1,6 @@
 /* eslint-disable require-atomic-updates */
 
-import Turndown from 'turndown'
+import Turndown, { TagName } from 'turndown'
 import marked from 'marked'
 import { createHash } from 'crypto'
 import fetch from 'node-fetch'
@@ -19,6 +19,20 @@ interface ITranslatedPhrase {
       displayName: string,
     },
   }>,
+}
+
+const bareParagraphRenderer = new marked.Renderer()
+bareParagraphRenderer.paragraph = (text) => text
+
+function revertToMarkdown (html: string, keep: TagName[] = []) {
+  const turndown = new Turndown({
+    headingStyle: 'atx',
+    bulletListMarker: '-',
+    codeBlockStyle: 'fenced',
+    fence: '```',
+  })
+  turndown.keep(keep)
+  return turndown.turndown(html)
 }
 
 function hash (text: string) {
@@ -48,7 +62,7 @@ function extractTagNames (html: string) {
   }
   const blacklist = ['#document', '!doctype', '#text', 'html', 'head', 'body']
   return capture(createDocument(html))
-    .map((name) => name.toLowerCase())
+    .map((name) => name.toLowerCase() as TagName)
     .filter((name) => !blacklist.includes(name))
 }
 
@@ -59,15 +73,8 @@ export async function translateMarkdown (parsedMarkdown: any) {
   let totalCharacterCount = 0
   let totalTranslatedCharacterCount = 0
 
-  const turndown = new Turndown({
-    headingStyle: 'atx',
-    bulletListMarker: '-',
-    codeBlockStyle: 'fenced',
-    fence: '```',
-  })
-
   function translate (text: string) {
-    const markdown = turndown.turndown(text).replace(/"/g, '&quot;')
+    const markdown = revertToMarkdown(text).replace(/"/g, '&quot;')
     totalCharacterCount += markdown.length
     const key = hash(markdown)
     const translated = translatedData.find((phrase) => phrase.id === key)
@@ -77,7 +84,9 @@ export async function translateMarkdown (parsedMarkdown: any) {
       for (const translator of translated.translators) {
         translators.add(translator.user.githubId)
       }
-      return translated.translatedText
+      return marked(translated.translatedText, {
+        renderer: bareParagraphRenderer,
+      })
     } else {
       return text
     }
@@ -102,8 +111,7 @@ export async function translateMarkdown (parsedMarkdown: any) {
   }
 
   const html = marked(parsedMarkdown.body, { renderer })
-  turndown.keep(extractTagNames(html) as any)
-  parsedMarkdown.body = turndown.turndown(html)
+  parsedMarkdown.body = revertToMarkdown(html, extractTagNames(html))
 
   const translatorIds = [...translators.values()]
   parsedMarkdown.attributes.title = translate(parsedMarkdown.attributes.title)
