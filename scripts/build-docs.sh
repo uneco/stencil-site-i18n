@@ -19,3 +19,4 @@ npx ts-node scripts/patch-for-docs.ts
 (cd ./build/docs && yarn run site.structure)
 npx ts-node scripts/translate-structure.ts
 (cd ./build/docs && yarn run docs && yarn run prerender)
+npx ts-node scripts/translation-stats.ts
