@@ -27,7 +27,7 @@
     "glob": "^7.1.4",
     "js-yaml": "^3.13.1",
     "marked": "^0.7.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "ts-node": "^8.3.0",
     "turndown": "^5.0.3",
     "typescript": "^3.5.3"
